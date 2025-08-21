@@ -1,9 +1,8 @@
 package coding.interview.app.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
 public class Flight {
@@ -14,6 +13,14 @@ public class Flight {
     String origin;
     String destination;
     String status;
+
+    @ManyToMany
+    @JoinTable(
+            joinColumns = @JoinColumn(name = "flight_id"),
+            name = "flight_passengers",
+            inverseJoinColumns = @JoinColumn(name = "passenger_id")
+    )
+    List<Passenger> passengers;
 
     public Flight(Long id, String code, String origin, String destination, String status) {
         this.id = id;
@@ -65,5 +72,13 @@ public class Flight {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public List<Passenger> getPassengers() {
+        return passengers;
+    }
+
+    public void setPassengers(List<Passenger> passengers) {
+        this.passengers = passengers;
     }
 }
